@@ -1,0 +1,226 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import AtmosphericBackground from "@/components/AtmosphericBackground";
+import InteractiveTypography from "@/components/InteractiveTypography";
+
+interface HeroProps {
+  isVisible: boolean;
+}
+
+export default function Hero({ isVisible }: HeroProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Track how much hero has scrolled out of view (0 = full view, 1 = fully gone)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // CHAITANYA floats up + fades as page scrolls
+  const nameY       = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+  const nameOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+  // Tagline fades out earlier (it's more subtle)
+  const taglineOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  // Bottom bar fades + slides down
+  const bottomOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const bottomY       = useTransform(scrollYProgress, [0, 0.25], ["0px", "20px"]);
+  // Eyebrow fades fast
+  const eyebrowOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="hero"
+      style={{
+        position: "relative",
+        height: "100vh",
+        minHeight: "600px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        overflow: "hidden",
+        background: "#111111",
+      }}
+    >
+      {/* Background layers */}
+      <AtmosphericBackground />
+
+      <div style={{ position: "relative", zIndex: 10, flex: 1, display: "flex", flexDirection: "column" }}>
+
+        {/* Eyebrow — top left */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={isVisible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{ padding: "5.5rem 2.5rem 0", display: "flex", alignItems: "center", gap: "0.5rem",
+                   opacity: eyebrowOpacity as any }}
+        >
+          <span style={{
+            width: "7px", height: "7px", borderRadius: "50%", background: "#c8102e",
+            display: "inline-block", flexShrink: 0, animation: "pulse 2s ease-in-out infinite",
+          }} />
+          <span style={{
+            fontSize: "0.6875rem", letterSpacing: "0.2em", textTransform: "uppercase",
+            color: "#B5B5B5", fontFamily: "Geist, sans-serif", fontWeight: 500,
+          }}>
+            Shipping Ideas Into Reality.
+          </span>
+        </motion.div>
+
+        {/* Main typography area */}
+        <div style={{
+          flex: 1, display: "flex", alignItems: "center",
+          padding: "0 2rem", position: "relative",
+        }}>
+
+          {/* Tagline */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isVisible ? { opacity: 1 } : {}}
+            transition={{ duration: 1.2, delay: 1.5 }}
+            style={{
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 20, textAlign: "center", pointerEvents: "none", whiteSpace: "nowrap",
+              opacity: taglineOpacity as any,
+            }}
+          >
+            <p style={{
+              fontSize: "clamp(0.5rem, 0.9vw, 0.78rem)",
+              letterSpacing: "0.25em", textTransform: "uppercase",
+              color: "#c8102e", fontFamily: "'Poppins', Geist, sans-serif",
+              fontWeight: 700,
+              textShadow: "0 0 30px rgba(200,16,46,0.6)",
+              opacity: 0.95,
+            }}>
+              Crafting Interfaces That People Remember.
+            </p>
+          </motion.div>
+
+          {/* CHAITANYA — floats up on scroll */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{ width: "100%", y: nameY, opacity: nameOpacity as any }}
+          >
+            <InteractiveTypography
+              text="CHAITANYA"
+              style={{
+                fontSize: "clamp(5rem, 19vw, 22rem)",
+                lineHeight: 1,
+                textTransform: "uppercase",
+                paddingBlock: "0.6em",
+                boxSizing: "content-box",
+              }}
+            />
+          </motion.div>
+        </div>
+
+        {/* Bottom bar — fades down on scroll */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          style={{
+            display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+            padding: "0 2.5rem 2.5rem", flexWrap: "wrap", gap: "1.5rem",
+            position: "relative",
+            opacity: bottomOpacity as any,
+            y: bottomY,
+          }}
+        >
+          {/* Role description */}
+          <div style={{ maxWidth: "320px" }}>
+            <p style={{
+              fontSize: "0.875rem", color: "#B5B5B5", fontFamily: "'Poppins', Geist, sans-serif",
+              fontWeight: 400, lineHeight: 1.8, letterSpacing: "0.02em",
+            }}>
+              Full-Stack Developer &amp; Creative Technologist engineering fast, immersive,
+              and motion-driven digital products.
+            </p>
+          </div>
+
+          {/* Scroll indicator */}
+          <div style={{
+            position: "absolute", bottom: "2.5rem", left: "50%",
+            transform: "translateX(-50%)", display: "flex",
+            flexDirection: "column", alignItems: "center", gap: "0.5rem",
+          }}>
+            <span style={{
+              fontSize: "0.5rem", letterSpacing: "0.35em", textTransform: "uppercase",
+              color: "rgba(181,181,181,0.6)", fontFamily: "Geist, sans-serif",
+            }}>Scroll</span>
+            <div style={{
+              width: "1px", height: "24px",
+              background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)",
+              position: "relative", overflow: "hidden",
+            }}>
+              <div className="scroll-line" style={{ position: "absolute", inset: 0, background: "rgba(200,16,46,0.6)" }} />
+            </div>
+          </div>
+
+          {/* CTAs */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", alignItems: "flex-end" }}>
+            <a
+              href="#projects"
+              onClick={(e) => { e.preventDefault(); document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" }); }}
+              id="explore-work-btn"
+              style={{
+                display: "flex", alignItems: "center", gap: "0.75rem",
+                background: "#c8102e", color: "#fff",
+                fontFamily: "Geist, sans-serif", fontSize: "0.8125rem",
+                fontWeight: 500, letterSpacing: "0.03em",
+                padding: "0.875rem 1.75rem", borderRadius: "100px", textDecoration: "none",
+                boxShadow: "0 0 25px rgba(160,42,34,0.4)",
+                transition: "background 0.3s ease, transform 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#b8342b";
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#c8102e";
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+              }}
+            >
+              <span style={{
+                width: "28px", height: "28px", borderRadius: "50%",
+                border: "1px solid rgba(0,0,0,0.3)",
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                fontSize: "0.75rem",
+              }}>↗</span>
+              Explore Work →
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }); }}
+              id="lets-talk-btn"
+              style={{
+                display: "flex", alignItems: "center", gap: "0.5rem",
+                background: "transparent", color: "#fff",
+                fontFamily: "Geist, sans-serif", fontSize: "0.8125rem",
+                fontWeight: 400, letterSpacing: "0.03em",
+                padding: "0.875rem 1.5rem", borderRadius: "100px", textDecoration: "none",
+                border: "1px solid rgba(255,255,255,0.15)",
+                transition: "border-color 0.3s ease, transform 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(200,16,46,0.5)";
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.15)";
+                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+              }}
+            >
+              Let&apos;s Talk →
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
