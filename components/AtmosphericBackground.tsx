@@ -56,9 +56,9 @@ export default function AtmosphericBackground() {
         const cy = c.by * H + oy;
         const r  = c.r * Math.min(W, H) * 0.72;
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0,    "rgba(40, 30, 30, 0.88)");
-        g.addColorStop(0.4,  "rgba(32, 24, 24, 0.66)");
-        g.addColorStop(0.75, "rgba(24, 18, 18, 0.28)");
+        g.addColorStop(0,    "rgba(38, 26, 26, 0.60)");
+        g.addColorStop(0.4,  "rgba(30, 22, 22, 0.42)");
+        g.addColorStop(0.75, "rgba(22, 16, 16, 0.18)");
         g.addColorStop(1,    "rgba(16, 12, 12, 0.00)");
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);

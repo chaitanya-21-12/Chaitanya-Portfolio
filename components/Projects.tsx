@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, type Project } from "@/lib/data";
 
-// ProjectDetail overlay — unchanged
+// ProjectDetail overlay modal
 function ProjectDetail({ project, onClose }: { project: Project; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -34,199 +34,345 @@ function ProjectDetail({ project, onClose }: { project: Project; onClose: () => 
           onClick={onClose}
           id="project-detail-close"
           aria-label="Close project detail"
-          style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "100px", padding: "0.5rem 1.25rem", color: "#f0ede8", fontFamily: "Geist, sans-serif", fontSize: "0.8125rem", cursor: "none", transition: "border-color 0.3s ease" }}
+          style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "100px", padding: "0.5rem 1.25rem", color: "#f0ede8", fontFamily: "Geist, sans-serif", fontSize: "0.8125rem", cursor: "pointer", transition: "border-color 0.3s ease" }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(200,16,46,0.5)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; }}
         >
-          Close ×
+          Close ✕
         </button>
       </div>
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "3rem 2rem 6rem" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "4rem 2rem 8rem" }}>
         <div style={{ marginBottom: "3rem" }}>
-          <p style={{ fontSize: "0.6875rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#c8102e", marginBottom: "1rem", fontFamily: "Geist, sans-serif", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <span style={{ display: "inline-block", width: "2rem", height: "1px", background: "#c8102e" }} />
-            {project.category}
-          </p>
-          <h2 style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 700, letterSpacing: "-0.03em", color: "#f0ede8", fontFamily: "Geist, sans-serif", lineHeight: 1, marginBottom: "0.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8102e", fontFamily: "Geist, sans-serif" }}>
+              {project.category}
+            </span>
+            <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
+            <span style={{ fontSize: "0.6875rem", color: "#888880", fontFamily: "Geist, sans-serif" }}>
+              {project.year}
+            </span>
+            {project.role && (
+              <>
+                <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
+                <span style={{ fontSize: "0.6875rem", color: "#888880", fontFamily: "Geist, sans-serif" }}>
+                  {project.role}
+                </span>
+              </>
+            )}
+          </div>
+          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em", color: "#f0ede8", fontFamily: "Geist, sans-serif", marginBottom: "1rem", lineHeight: 1.1 }}>
             {project.title}
           </h2>
-          <p style={{ fontSize: "1.125rem", color: "#888880", fontFamily: "Geist, sans-serif", fontWeight: 300 }}>{project.subtitle}</p>
-        </div>
-
-        <div style={{ width: "100%", aspectRatio: "16/9", position: "relative", borderRadius: "4px", overflow: "hidden", marginBottom: "3rem", border: "1px solid rgba(255,255,255,0.06)" }}>
-          <Image src={project.image} alt={`${project.title} screenshot`} fill style={{ objectFit: "cover" }} sizes="(max-width: 1100px) 100vw, 1100px" />
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "2rem", marginBottom: "3rem", paddingBottom: "3rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          {project.role && (
-            <div>
-              <p style={{ fontSize: "0.625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#444440", fontFamily: "Geist, sans-serif", marginBottom: "0.5rem" }}>ROLE</p>
-              <p style={{ fontSize: "0.9375rem", color: "#f0ede8", fontFamily: "Geist, sans-serif" }}>{project.role}</p>
-            </div>
-          )}
-          <div>
-            <p style={{ fontSize: "0.625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#444440", fontFamily: "Geist, sans-serif", marginBottom: "0.5rem" }}>YEAR</p>
-            <p style={{ fontSize: "0.9375rem", color: "#f0ede8", fontFamily: "Geist, sans-serif" }}>{project.year}</p>
-          </div>
-          <div>
-            <p style={{ fontSize: "0.625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#444440", fontFamily: "Geist, sans-serif", marginBottom: "0.5rem" }}>STACK</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-              {project.technologies.map((tech) => (
-                <span key={tech} style={{ fontSize: "0.75rem", color: "#888880", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "100px", padding: "0.2rem 0.75rem", fontFamily: "Geist, sans-serif" }}>{tech}</span>
-              ))}
-            </div>
-          </div>
-          {project.url && (
-            <div>
-              <p style={{ fontSize: "0.625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#444440", fontFamily: "Geist, sans-serif", marginBottom: "0.5rem" }}>LIVE SITE</p>
-              <a href={project.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.9375rem", color: "#c8102e", fontFamily: "Geist, sans-serif", textDecoration: "none" }}>
-                {project.url.replace("https://", "")} →
-              </a>
-            </div>
-          )}
-        </div>
-
-        <p style={{ fontSize: "1.125rem", color: "#888880", fontFamily: "Geist, sans-serif", fontWeight: 300, lineHeight: 1.8, maxWidth: "700px" }}>
-          {project.description}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-// Compact grid card for featured projects
-// Directional fly-in vectors per card index
-const FLY_VARIANTS = [
-  { x: -70, y: 50, rotate: -3 },  // card 0: from bottom-left, slight tilt
-  { x: 0,   y: 80, rotate:  1 },  // card 1: from below
-  { x: 70,  y: 50, rotate:  3 },  // card 2: from bottom-right, slight tilt
-  { x: 0,   y: 60, rotate: -1 },  // card 3: from below
-];
-
-function FeaturedCard({ project, index, onOpen }: { project: Project; index: number; onOpen: (p: Project) => void }) {
-  const imageRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const fly = FLY_VARIANTS[index % FLY_VARIANTS.length];
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!imageRef.current) return;
-    const rect = imageRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    const img = imageRef.current.querySelector("img") as HTMLImageElement | null;
-    if (img) {
-      img.style.transform = `scale(1.06) translate(${x * -6}px, ${y * -6}px)`;
-    }
-  };
-
-  const handleMouseLeave = () => {
-    const img = imageRef.current?.querySelector("img") as HTMLImageElement | null;
-    if (img) img.style.transform = "scale(1) translate(0,0)";
-    if (overlayRef.current) overlayRef.current.style.opacity = "0";
-  };
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (overlayRef.current) overlayRef.current.style.opacity = "1";
-    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(200,16,46,0.2)";
-  };
-
-  const handleMouseLeaveDiv = (e: React.MouseEvent<HTMLDivElement>) => {
-    handleMouseLeave();
-    (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.06)";
-  };
-
-  return (
-    <motion.article
-      initial={{ opacity: 0, x: fly.x, y: fly.y, rotate: fly.rotate, scale: 0.92 }}
-      whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{
-        duration: 0.85,
-        delay: index * 0.08,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      onClick={() => onOpen(project)}
-      className="project-card"
-      style={{ cursor: "none" }}
-    >
-      {/* Image container */}
-      <div
-        ref={imageRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeaveDiv}
-        onMouseEnter={handleMouseEnter}
-        style={{
-          position: "relative",
-          aspectRatio: "4/3",
-          borderRadius: "3px",
-          overflow: "hidden",
-          border: "1px solid rgba(255,255,255,0.06)",
-          marginBottom: "1rem",
-          transition: "border-color 0.4s ease",
-        }}
-      >
-        <Image
-          src={project.image}
-          alt={`${project.title} preview`}
-          fill
-          style={{ objectFit: "cover", transition: "transform 0.6s ease" }}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          loading="lazy"
-        />
-        {/* Dark overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "rgba(8,8,8,0.2)", transition: "opacity 0.3s ease" }} />
-        {/* Hover view indicator */}
-        <div
-          ref={overlayRef}
-          className="view-indicator"
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(8,8,8,0.45)",
-            opacity: 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#fff", fontFamily: "Geist, sans-serif", background: "rgba(200,16,46,0.85)", padding: "0.5rem 1.25rem", borderRadius: "100px" }}>
-            VIEW →
-          </span>
-        </div>
-        {/* Category badge */}
-        <div style={{ position: "absolute", top: "0.875rem", left: "0.875rem", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", fontFamily: "Geist, sans-serif", background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)", padding: "0.3rem 0.75rem", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.08)" }}>
-          {project.year}
-        </div>
-      </div>
-
-      {/* Card meta */}
-      <div>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "0.375rem", gap: "0.5rem" }}>
-          <h3 style={{ fontSize: "clamp(0.9375rem, 1.4vw, 1.1rem)", fontWeight: 600, letterSpacing: "-0.01em", color: "#f0ede8", fontFamily: "Geist, sans-serif", lineHeight: 1.2, transition: "color 0.3s ease" }}>
-            {project.title}
-          </h3>
+          <p style={{ fontSize: "1.125rem", color: "#c8102e", fontFamily: "Geist, sans-serif", marginBottom: "1.5rem" }}>
+            {project.subtitle}
+          </p>
           {project.url && (
             <a
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              style={{ fontSize: "0.625rem", color: "#c8102e", fontFamily: "Geist, sans-serif", textDecoration: "none", border: "1px solid rgba(200,16,46,0.3)", borderRadius: "100px", padding: "0.25rem 0.75rem", flexShrink: 0, transition: "background 0.3s ease", whiteSpace: "nowrap" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(200,16,46,0.1)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
+              id="project-visit-site"
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#c8102e", color: "#fff", fontFamily: "Geist, sans-serif", fontSize: "0.8125rem", fontWeight: 500, letterSpacing: "0.03em", padding: "0.75rem 1.5rem", borderRadius: "100px", textDecoration: "none", transition: "background 0.3s ease" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#b8342b"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#c8102e"; }}
             >
-              Live ↗
+              Visit Live Site ↗
             </a>
           )}
         </div>
-        <p style={{ fontSize: "0.75rem", color: "#555552", fontFamily: "Geist, sans-serif", letterSpacing: "0.03em", marginBottom: "0.625rem" }}>
-          {project.category}
+
+        <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", marginBottom: "4rem" }}>
+          <Image src={project.image} alt={`${project.title} full view`} fill style={{ objectFit: "cover" }} sizes="1000px" priority />
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "4rem" }}>
+          <div>
+            <h3 style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8102e", fontFamily: "Geist, sans-serif", marginBottom: "1.5rem" }}>
+              Overview
+            </h3>
+            <p style={{ fontSize: "1rem", color: "#B5B5B5", fontFamily: "Geist, sans-serif", lineHeight: 1.9, fontWeight: 300 }}>
+              {project.description}
+            </p>
+          </div>
+          <div>
+            <h3 style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8102e", fontFamily: "Geist, sans-serif", marginBottom: "1.5rem" }}>
+              Technologies
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {project.technologies.map((t) => (
+                <div key={t} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.875rem", color: "#f0ede8", fontFamily: "Geist, sans-serif", paddingBottom: "0.75rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#c8102e" }} />
+                  {t}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// 2x2 Edge-to-Edge Website Preview Card Component (matching user reference)
+function BentoProjectCard({
+  project,
+  index,
+  onOpen,
+}: {
+  project: Project;
+  index: number;
+  onOpen: (p: Project) => void;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -15, scale: 0.98 }}
+      transition={{
+        duration: 0.45,
+        delay: (index % 4) * 0.05,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+      onClick={() => onOpen(project)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bento-project-card"
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "clamp(260px, 38vh, 335px)",
+        borderRadius: "18px",
+        overflow: "hidden",
+        background: "#0d0d0d",
+        border: isHovered
+          ? "1px solid rgba(200, 16, 46, 0.55)"
+          : "1px solid rgba(255, 255, 255, 0.09)",
+        boxShadow: isHovered
+          ? "0 22px 50px rgba(0, 0, 0, 0.85), 0 0 32px rgba(200, 16, 46, 0.2)"
+          : "0 8px 24px rgba(0, 0, 0, 0.5)",
+        cursor: "pointer",
+        transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+        transition: "border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
+      }}
+    >
+      {/* 100% Background Image filling the entire card */}
+      <Image
+        src={project.image}
+        alt={`${project.title} preview`}
+        fill
+        style={{
+          objectFit: "cover",
+          objectPosition: "top center",
+          transform: isHovered ? "scale(1.05)" : "scale(1)",
+          transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+        sizes="(max-width: 860px) 100vw, 720px"
+        loading="lazy"
+      />
+
+      {/* Subtle overlay gradient to keep text readable across both light and dark screenshot backgrounds */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: isHovered
+            ? "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.15) 100%)"
+            : "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 38%, transparent 70%)",
+          transition: "background 0.3s ease",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Top Badges: Category + Year on left, Live Site on right */}
+      <div
+        style={{
+          position: "absolute",
+          top: "1rem",
+          left: "1rem",
+          right: "1rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: 2,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <span
+            style={{
+              fontSize: "0.625rem",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#f0ede8",
+              fontFamily: "Geist, sans-serif",
+              fontWeight: 600,
+              background: "rgba(10, 10, 10, 0.75)",
+              backdropFilter: "blur(10px)",
+              padding: "0.3rem 0.75rem",
+              borderRadius: "100px",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+            }}
+          >
+            {project.category}
+          </span>
+          <span
+            style={{
+              fontSize: "0.625rem",
+              color: "rgba(255, 255, 255, 0.65)",
+              fontFamily: "Geist, sans-serif",
+              fontWeight: 500,
+              background: "rgba(10, 10, 10, 0.65)",
+              backdropFilter: "blur(10px)",
+              padding: "0.3rem 0.6rem",
+              borderRadius: "100px",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+            }}
+          >
+            {project.year}
+          </span>
+        </div>
+
+        {project.url ? (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              fontSize: "0.625rem",
+              color: "#ffffff",
+              background: "rgba(200, 16, 46, 0.88)",
+              border: "1px solid rgba(255, 255, 255, 0.25)",
+              borderRadius: "100px",
+              padding: "0.3rem 0.75rem",
+              fontFamily: "Geist, sans-serif",
+              fontWeight: 600,
+              textDecoration: "none",
+              boxShadow: "0 0 16px rgba(200, 16, 46, 0.5)",
+              transition: "background 0.2s ease, transform 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "#b8342b";
+              (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "rgba(200, 16, 46, 0.88)";
+              (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)";
+            }}
+          >
+            <span
+              style={{
+                width: "5px",
+                height: "5px",
+                borderRadius: "50%",
+                background: "#ffffff",
+                display: "inline-block",
+              }}
+            />
+            Live Site ↗
+          </a>
+        ) : null}
+      </div>
+
+      {/* Center Hover Action Pill */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: isHovered ? 1 : 0,
+          transform: isHovered ? "scale(1)" : "scale(0.92)",
+          transition: "opacity 0.25s ease, transform 0.25s ease",
+          pointerEvents: "none",
+          zIndex: 2,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.6875rem",
+            letterSpacing: "0.14em",
+            color: "#ffffff",
+            fontFamily: "Geist, sans-serif",
+            fontWeight: 600,
+            background: "#c8102e",
+            padding: "0.55rem 1.35rem",
+            borderRadius: "100px",
+            boxShadow: "0 0 25px rgba(200, 16, 46, 0.75)",
+          }}
+        >
+          VIEW CASE STUDY →
+        </span>
+      </div>
+
+      {/* Bottom Info Overlay inside the card */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "1.25rem 1.35rem",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.25rem",
+        }}
+      >
+        <h3
+          style={{
+            fontSize: "1.2rem",
+            fontWeight: 700,
+            letterSpacing: "-0.015em",
+            color: "#ffffff",
+            fontFamily: "Geist, sans-serif",
+            lineHeight: 1.2,
+            margin: 0,
+            textShadow: "0 2px 10px rgba(0,0,0,0.85)",
+          }}
+        >
+          {project.title}
+        </h3>
+
+        <p
+          style={{
+            fontSize: "0.78125rem",
+            color: "#E0DED8",
+            fontFamily: "Geist, sans-serif",
+            fontWeight: 400,
+            margin: 0,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            textShadow: "0 1px 8px rgba(0,0,0,0.85)",
+          }}
+        >
+          {project.subtitle}
         </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem" }}>
-          {project.technologies.slice(0, 3).map((tech) => (
-            <span key={tech} style={{ fontSize: "0.5625rem", color: "#666662", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "100px", padding: "0.15rem 0.55rem", fontFamily: "Geist, sans-serif", letterSpacing: "0.04em" }}>
+
+        {/* Tech pills */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginTop: "0.35rem" }}>
+          {project.technologies.slice(0, 4).map((tech) => (
+            <span
+              key={tech}
+              style={{
+                fontSize: "0.5625rem",
+                color: "#e0deda",
+                background: "rgba(0, 0, 0, 0.55)",
+                backdropFilter: "blur(6px)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                borderRadius: "100px",
+                padding: "0.15rem 0.5rem",
+                fontFamily: "Geist, sans-serif",
+                letterSpacing: "0.02em",
+              }}
+            >
               {tech}
             </span>
           ))}
@@ -236,137 +382,162 @@ function FeaturedCard({ project, index, onOpen }: { project: Project; index: num
   );
 }
 
-// More Work card — editorial/larger format
-function MoreWorkCard({ project, index, onOpen }: { project: Project; index: number; onOpen: (p: Project) => void }) {
-  return (
-    <motion.article
-      key={project.id}
-      initial={{ opacity: 0, y: 50, scale: 0.94 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.75, delay: index * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
-      onClick={() => onOpen(project)}
-      className="project-card"
-      style={{
-        border: "1px solid rgba(255,255,255,0.06)",
-        borderRadius: "4px",
-        overflow: "hidden",
-        cursor: "none",
-        transition: "border-color 0.4s ease",
-      }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(200,16,46,0.25)"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; }}
-    >
-      <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
-        <Image
-          src={project.image}
-          alt={`${project.title} preview`}
-          fill
-          style={{ objectFit: "cover", transition: "transform 0.8s ease" }}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          loading="lazy"
-        />
-      </div>
-      <div style={{ padding: "1.5rem" }}>
-        <h4 style={{ fontSize: "1.125rem", fontWeight: 600, color: "#f0ede8", fontFamily: "Geist, sans-serif", letterSpacing: "-0.01em", marginBottom: "0.5rem" }}>
-          {project.title}
-        </h4>
-        <p style={{ fontSize: "0.8125rem", color: "#888880", fontFamily: "Geist, sans-serif", lineHeight: 1.6, marginBottom: "1rem" }}>
-          {project.subtitle}
-        </p>
-        <p style={{ fontSize: "0.8125rem", color: "#666662", fontFamily: "Geist, sans-serif", lineHeight: 1.7, marginBottom: "1rem" }}>
-          {project.description.slice(0, 120)}…
-        </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-          {project.technologies.slice(0, 4).map((tech) => (
-            <span key={tech} style={{ fontSize: "0.625rem", color: "#888880", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "100px", padding: "0.2rem 0.6rem", fontFamily: "Geist, sans-serif", letterSpacing: "0.05em" }}>
-              {tech}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.article>
-  );
-}
+const CARDS_PER_PAGE = 4;
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const featuredProjects = projects.filter((p) => p.featured);
-  const otherProjects = projects.filter((p) => !p.featured);
+  const [filter, setFilter] = useState<"all" | "client" | "creative">("all");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredProjects = projects.filter((p) => {
+    if (filter === "client") return p.type === "web";
+    if (filter === "creative") return p.type !== "web";
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredProjects.length / CARDS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * CARDS_PER_PAGE,
+    currentPage * CARDS_PER_PAGE
+  );
+
+  const handleFilterChange = (tabId: "all" | "client" | "creative") => {
+    setFilter(tabId);
+    setCurrentPage(1);
+  };
 
   return (
     <>
       <section
         id="projects"
-        style={{ background: "transparent", padding: "8rem 0" }}
+        style={{
+          background: "transparent",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "2rem 0",
+          boxSizing: "border-box",
+        }}
       >
-        <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 2rem" }}>
-          {/* Section header — sweeps in from left */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={{ marginBottom: "4rem" }}
-          >
-            <div className="section-label" style={{ marginBottom: "1.25rem" }}>FEATURED WORK</div>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-              <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)", fontWeight: 700, letterSpacing: "-0.03em", color: "#f0ede8", fontFamily: "Geist, sans-serif", lineHeight: 1 }}>
-                Selected Projects
+        <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 2rem", width: "100%" }}>
+          {/* Section header: Sleek, compact top bar */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1rem",
+            marginBottom: "1.25rem",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+              <span style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8102e", fontFamily: "Geist, sans-serif", fontWeight: 700 }}>
+                02 / SELECTED WORK
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 600, letterSpacing: "-0.02em", color: "#f0ede8", fontFamily: "Geist, sans-serif", margin: 0 }}>
+                Featured Projects
               </h2>
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.25 }}
-                style={{ fontSize: "0.9375rem", color: "#888880", fontFamily: "Geist, sans-serif", maxWidth: "340px", lineHeight: 1.7 }}
-              >
-                Built for real clients — live in production, crafted with care.
-              </motion.p>
             </div>
-          </motion.div>
 
-          {/* 4-column featured grid */}
-          <div
-            className="projects-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "1.5rem",
-            }}
-          >
-            {featuredProjects.map((project, i) => (
-              <FeaturedCard
-                key={project.id}
-                project={project}
-                index={i}
-                onOpen={setActiveProject}
-              />
-            ))}
-          </div>
-
-          {/* More Work */}
-          {otherProjects.length > 0 && (
-            <div style={{ marginTop: "8rem" }}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                style={{ marginBottom: "3rem" }}
-              >
-                <div className="section-label" style={{ marginBottom: "1rem" }}>OTHER PROJECTS</div>
-                <h3 style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 600, letterSpacing: "-0.02em", color: "#f0ede8", fontFamily: "Geist, sans-serif" }}>
-                  More Work
-                </h3>
-              </motion.div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
-                {otherProjects.map((project, i) => (
-                  <MoreWorkCard key={project.id} project={project} index={i} onOpen={setActiveProject} />
+            {/* Filter Pills + Page Switcher */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+              {/* Filter pills */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", background: "rgba(255, 255, 255, 0.03)", padding: "0.25rem", borderRadius: "100px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+                {[
+                  { id: "all", label: "All (6)" },
+                  { id: "client", label: "Client Work (4)" },
+                  { id: "creative", label: "Creative & ML (2)" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleFilterChange(tab.id as any)}
+                    style={{
+                      background: filter === tab.id ? "#c8102e" : "transparent",
+                      color: filter === tab.id ? "#ffffff" : "#888880",
+                      border: "none",
+                      borderRadius: "100px",
+                      padding: "0.25rem 0.75rem",
+                      fontSize: "0.6875rem",
+                      fontFamily: "Geist, sans-serif",
+                      fontWeight: filter === tab.id ? 600 : 400,
+                      cursor: "pointer",
+                      transition: "all 0.25s ease",
+                    }}
+                  >
+                    {tab.label}
+                  </button>
                 ))}
               </div>
+
+              {/* Page Switcher */}
+              {totalPages > 1 && (
+                <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", background: "rgba(255, 255, 255, 0.03)", padding: "0.2rem 0.55rem", borderRadius: "100px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    aria-label="Previous page"
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      color: currentPage === 1 ? "rgba(255, 255, 255, 0.2)" : "#f0ede8",
+                      cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                      fontSize: "0.8125rem",
+                      padding: "0.1rem 0.35rem",
+                      fontFamily: "Geist, sans-serif",
+                    }}
+                  >
+                    ‹
+                  </button>
+                  <span style={{ fontSize: "0.6875rem", color: "#888880", fontFamily: "Geist, sans-serif", fontWeight: 500 }}>
+                    {currentPage} / {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    aria-label="Next page"
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      color: currentPage === totalPages ? "rgba(255, 255, 255, 0.2)" : "#f0ede8",
+                      cursor: currentPage === totalPages ? "not-allowed" : "pointer",
+                      fontSize: "0.8125rem",
+                      padding: "0.1rem 0.35rem",
+                      fontFamily: "Geist, sans-serif",
+                    }}
+                  >
+                    ›
+                  </button>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Exactly 4 Edge-to-Edge Rectangular Preview Cards (2x2 Matrix) */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`page-${currentPage}-${filter}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="projects-bento-grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "1.25rem",
+              }}
+            >
+              {paginatedProjects.map((project, i) => (
+                <BentoProjectCard
+                  key={project.id}
+                  project={project}
+                  index={i}
+                  onOpen={setActiveProject}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 

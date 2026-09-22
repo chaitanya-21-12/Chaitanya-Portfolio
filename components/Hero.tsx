@@ -71,40 +71,22 @@ export default function Hero({ isVisible }: HeroProps) {
 
         {/* Main typography area */}
         <div style={{
-          flex: 1, display: "flex", alignItems: "center",
+          flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
           padding: "0 2rem", position: "relative",
         }}>
-
-          {/* Tagline */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isVisible ? { opacity: 1 } : {}}
-            transition={{ duration: 1.2, delay: 1.5 }}
-            style={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 20, textAlign: "center", pointerEvents: "none", whiteSpace: "nowrap",
-              opacity: taglineOpacity as any,
-            }}
-          >
-            <p style={{
-              fontSize: "clamp(0.5rem, 0.9vw, 0.78rem)",
-              letterSpacing: "0.25em", textTransform: "uppercase",
-              color: "#c8102e", fontFamily: "'Poppins', Geist, sans-serif",
-              fontWeight: 700,
-              textShadow: "0 0 30px rgba(200,16,46,0.6)",
-              opacity: 0.95,
-            }}>
-              Crafting Interfaces That People Remember.
-            </p>
-          </motion.div>
-
-          {/* CHAITANYA — floats up on scroll */}
+          {/* CHAITANYA + Tagline wrapper — floats up on scroll */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: "100%", y: nameY, opacity: nameOpacity as any }}
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              y: nameY,
+              opacity: nameOpacity as any,
+            }}
           >
             <InteractiveTypography
               text="CHAITANYA"
@@ -112,10 +94,39 @@ export default function Hero({ isVisible }: HeroProps) {
                 fontSize: "clamp(5rem, 19vw, 22rem)",
                 lineHeight: 1,
                 textTransform: "uppercase",
-                paddingBlock: "0.6em",
+                paddingTop: "0.3em",
+                paddingBottom: "0.15em",
                 boxSizing: "content-box",
               }}
             />
+
+            {/* Tagline — placed cleanly below CHAITANYA */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 1.0, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                textAlign: "center",
+                marginTop: "0.5rem",
+                zIndex: 20,
+                pointerEvents: "none",
+                whiteSpace: "nowrap",
+                opacity: taglineOpacity as any,
+              }}
+            >
+              <p style={{
+                fontSize: "clamp(0.55rem, 1vw, 0.85rem)",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "#c8102e",
+                fontFamily: "'Poppins', Geist, sans-serif",
+                fontWeight: 700,
+                textShadow: "0 0 30px rgba(200,16,46,0.6)",
+                opacity: 0.95,
+              }}>
+                Crafting Interfaces That People Remember.
+              </p>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -143,15 +154,24 @@ export default function Hero({ isVisible }: HeroProps) {
             </p>
           </div>
 
-          {/* Scroll indicator */}
-          <div style={{
-            position: "absolute", bottom: "2.5rem", left: "50%",
-            transform: "translateX(-50%)", display: "flex",
-            flexDirection: "column", alignItems: "center", gap: "0.5rem",
-          }}>
+          {/* Scroll indicator — interactive button */}
+          <button
+            onClick={() => {
+              document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            aria-label="Scroll down to About section"
+            style={{
+              position: "absolute", bottom: "2.5rem", left: "50%",
+              transform: "translateX(-50%)", display: "flex",
+              flexDirection: "column", alignItems: "center", gap: "0.5rem",
+              background: "transparent", border: "none", cursor: "pointer",
+              padding: "0.5rem", zIndex: 25,
+            }}
+          >
             <span style={{
               fontSize: "0.5rem", letterSpacing: "0.35em", textTransform: "uppercase",
               color: "rgba(181,181,181,0.6)", fontFamily: "Geist, sans-serif",
+              transition: "color 0.3s ease",
             }}>Scroll</span>
             <div style={{
               width: "1px", height: "24px",
@@ -160,7 +180,7 @@ export default function Hero({ isVisible }: HeroProps) {
             }}>
               <div className="scroll-line" style={{ position: "absolute", inset: 0, background: "rgba(200,16,46,0.6)" }} />
             </div>
-          </div>
+          </button>
 
           {/* CTAs */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", alignItems: "flex-end" }}>

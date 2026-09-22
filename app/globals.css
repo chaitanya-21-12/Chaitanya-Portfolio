@@ -94,10 +94,26 @@ html {
   background-color: var(--bg);
   color: var(--text-primary);
   scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+#hero {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+#about {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+#projects {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
 }
 
 body {
@@ -492,9 +508,9 @@ body::before {
   }
 }
 
-/* Mobile: 1 column */
-@media (max-width: 600px) {
-  .projects-grid {
+/* Projects Bento Grid — responsive */
+@media (max-width: 860px) {
+  .projects-bento-grid {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
   }

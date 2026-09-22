@@ -50,13 +50,13 @@ export default function CursorGlow() {
     const config = {
       SIM_RESOLUTION:      128,
       DYE_RESOLUTION:      1440,
-      DENSITY_DISSIPATION: 0.75,   // slightly denser trail
-      VELOCITY_DISSIPATION: 0.22,
+      DENSITY_DISSIPATION: 1.25,   // balanced: visible smoke trail without turning into thick dense fog
+      VELOCITY_DISSIPATION: 0.35,  // smooth fluid drag
       PRESSURE:            0.08,
       PRESSURE_ITERATIONS: 20,
-      CURL:                3,
-      SPLAT_RADIUS:        0.12,
-      SPLAT_FORCE:         5000,    // slightly more density per move
+      CURL:                2.5,    // graceful organic swirls
+      SPLAT_RADIUS:        0.09,   // balanced plume thickness
+      SPLAT_FORCE:         3400,   // responsive, visible smoke injection
       SHADING:             true,
       COLOR_UPDATE_SPEED:  10,
       TRANSPARENT:         true,
@@ -248,13 +248,13 @@ export default function CursorGlow() {
     initFBOs();
 
     // ── Color ─────────────────────────────────────────────────────────────────
-    // Multiplier 0.10 → dark atmospheric red, not paint-like
+    // Multiplier 0.082 → visible atmospheric crimson smoke, balanced density
     function hexToRGB(hex: string): ColorRGB {
       let v = hex.replace('#','');
       if (v.length===3) v=v[0]+v[0]+v[1]+v[1]+v[2]+v[2];
-      return { r:parseInt(v.slice(0,2),16)/255*0.10,
-               g:parseInt(v.slice(2,4),16)/255*0.10,
-               b:parseInt(v.slice(4,6),16)/255*0.10 };
+      return { r:parseInt(v.slice(0,2),16)/255*0.082,
+               g:parseInt(v.slice(2,4),16)/255*0.082,
+               b:parseInt(v.slice(4,6),16)/255*0.082 };
     }
     function generateColor(): ColorRGB {
       return hexToRGB(config.COLOR);

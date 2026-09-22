@@ -52,32 +52,38 @@ export default function Header({ onNavOpen }: HeaderProps) {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "0.5rem",
-          background: "transparent",
-          border: "1px solid rgba(255,255,255,0.12)",
+          gap: "0.6rem",
+          background: "rgba(22, 22, 22, 0.9)",
+          border: "1.5px solid rgba(255, 255, 255, 0.35)",
           borderRadius: "100px",
-          padding: "0.5rem 1.25rem",
-          color: "#f0ede8",
+          padding: "0.55rem 1.35rem",
+          color: "#ffffff",
           fontFamily: "Geist, sans-serif",
           fontSize: "0.8125rem",
-          letterSpacing: "0.02em",
-          fontWeight: 400,
-          transition: "border-color 0.3s ease, background 0.3s ease",
+          letterSpacing: "0.04em",
+          fontWeight: 600,
+          cursor: "pointer",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+          transition: "border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
         }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.borderColor =
-            "rgba(200,16,46,0.5)";
-          (e.currentTarget as HTMLButtonElement).style.background =
-            "rgba(200,16,46,0.06)";
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "#c8102e";
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(200, 16, 46, 0.15)";
+          (e.currentTarget as HTMLButtonElement).style.boxShadow =
+            "0 0 20px rgba(200, 16, 46, 0.35), 0 4px 16px rgba(0, 0, 0, 0.8)";
+          (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.borderColor =
-            "rgba(255,255,255,0.12)";
-          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255, 255, 255, 0.35)";
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(22, 22, 22, 0.9)";
+          (e.currentTarget as HTMLButtonElement).style.boxShadow =
+            "0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)";
+          (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
         }}
       >
-        Dive In{" "}
-        <span style={{ fontSize: "1rem", lineHeight: 1 }}>+</span>
+        <span>Dive In</span>
+        <span style={{ fontSize: "1.1rem", lineHeight: 1, color: "#c8102e", fontWeight: 700 }}>+</span>
       </button>
     </motion.header>
   );
