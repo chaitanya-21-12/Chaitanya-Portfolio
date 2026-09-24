@@ -11,6 +11,7 @@ const NavigationOverlay = dynamic(() => import("@/components/NavigationOverlay")
 
 import Projects from "@/components/Projects";
 import About from "@/components/About";
+import TechGlobe from "@/components/TechGlobe";
 import Experience from "@/components/Experience";
 import GitHubStats from "@/components/GitHubStats";
 import Education from "@/components/Education";
@@ -41,6 +42,7 @@ export default function Home() {
           <main id="main-content">
             <Hero isVisible={loaded} />
             <About />
+            <TechGlobe />
             <Projects />
             <Experience />
             <GitHubStats />
