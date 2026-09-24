@@ -46,14 +46,17 @@ export default function CursorGlow() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Skip heavy WebGL fluid sim on low-end devices (< 4 CPU cores)
+    if (typeof navigator !== 'undefined' && navigator.hardwareConcurrency < 4) return;
+
     // ── Config ────────────────────────────────────────────────────────────────
     const config = {
-      SIM_RESOLUTION:      128,
-      DYE_RESOLUTION:      1440,
+      SIM_RESOLUTION:      64,
+      DYE_RESOLUTION:      512,
       DENSITY_DISSIPATION: 1.25,   // balanced: visible smoke trail without turning into thick dense fog
       VELOCITY_DISSIPATION: 0.35,  // smooth fluid drag
       PRESSURE:            0.08,
-      PRESSURE_ITERATIONS: 20,
+      PRESSURE_ITERATIONS: 8,
       CURL:                2.5,    // graceful organic swirls
       SPLAT_RADIUS:        0.09,   // balanced plume thickness
       SPLAT_FORCE:         3400,   // responsive, visible smoke injection
