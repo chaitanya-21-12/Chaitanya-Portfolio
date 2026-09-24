@@ -14,8 +14,13 @@ export default function Loader({ onComplete }: LoaderProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Disable browser scroll restoration so it doesn't jump to About section
+    if (typeof history !== "undefined") {
+      history.scrollRestoration = "manual";
+    }
     // Lock scroll while loader is active
     document.body.style.overflow = "hidden";
+    window.scrollTo({ top: 0, behavior: "instant" });
 
     // Phase 1: monogram appears (0ms)
     const t1 = setTimeout(() => setPhase("name"), 800);
