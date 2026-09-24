@@ -47,7 +47,7 @@ export default function InteractiveTypography({
   const isLoopingRef = useRef(false);
 
   const BASE_WEIGHT = 100;
-  const MAX_WEIGHT  = 600;  // at wdth:30 condensed, lower weight avoids width-expand illusion
+  const MAX_WEIGHT  = 900;  // max boldness on hover for stronger visual contrast
   const BASE_WIDTH  = 30;
   const BASE_SCALE  = 1.0;
   const MAX_SCALE   = 2.2;  // scaleY — grows taller not wider

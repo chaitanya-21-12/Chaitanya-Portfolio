@@ -20,7 +20,7 @@ const navItems = [
 const socials = [
   { label: "GitHub", href: personalInfo.socials.github },
   { label: "LinkedIn", href: personalInfo.socials.linkedin },
-  { label: "Twitter / X", href: personalInfo.socials.twitter },
+
   { label: "Instagram", href: personalInfo.socials.instagram },
 ];
 

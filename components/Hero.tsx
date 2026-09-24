@@ -190,28 +190,24 @@ export default function Hero({ isVisible }: HeroProps) {
               id="explore-work-btn"
               style={{
                 display: "flex", alignItems: "center", gap: "0.75rem",
-                background: "#c8102e", color: "#fff",
+                background: "#e8102e", color: "#fff",
                 fontFamily: "Geist, sans-serif", fontSize: "0.8125rem",
-                fontWeight: 500, letterSpacing: "0.03em",
+                fontWeight: 600, letterSpacing: "0.03em",
                 padding: "0.875rem 1.75rem", borderRadius: "100px", textDecoration: "none",
-                boxShadow: "0 0 25px rgba(160,42,34,0.4)",
-                transition: "background 0.3s ease, transform 0.3s ease",
+                boxShadow: "0 0 30px rgba(232,16,46,0.55)",
+                transition: "background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#b8342b";
+                (e.currentTarget as HTMLAnchorElement).style.background = "#ff2040";
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 45px rgba(255,32,64,0.7)";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#c8102e";
+                (e.currentTarget as HTMLAnchorElement).style.background = "#e8102e";
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 30px rgba(232,16,46,0.55)";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
               }}
             >
-              <span style={{
-                width: "28px", height: "28px", borderRadius: "50%",
-                border: "1px solid rgba(0,0,0,0.3)",
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.75rem",
-              }}>↗</span>
               Explore Work →
             </a>
             <a
@@ -220,19 +216,21 @@ export default function Hero({ isVisible }: HeroProps) {
               id="lets-talk-btn"
               style={{
                 display: "flex", alignItems: "center", gap: "0.5rem",
-                background: "transparent", color: "#fff",
+                background: "rgba(255,255,255,0.08)", color: "#fff",
                 fontFamily: "Geist, sans-serif", fontSize: "0.8125rem",
-                fontWeight: 400, letterSpacing: "0.03em",
+                fontWeight: 500, letterSpacing: "0.03em",
                 padding: "0.875rem 1.5rem", borderRadius: "100px", textDecoration: "none",
-                border: "1px solid rgba(255,255,255,0.15)",
-                transition: "border-color 0.3s ease, transform 0.3s ease",
+                border: "1px solid rgba(255,255,255,0.45)",
+                transition: "border-color 0.3s ease, background 0.3s ease, transform 0.3s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(200,16,46,0.5)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.85)";
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.15)";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.15)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.45)";
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)";
                 (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
               }}
             >

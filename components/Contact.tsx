@@ -3,21 +3,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { personalInfo } from "@/lib/data";
+import emailjs from "@emailjs/browser";
 
 interface FormState {
   name: string;
   email: string;
+  phone: string;
   message: string;
 }
 
 interface FormErrors {
   name?: string;
   email?: string;
+  phone?: string;
   message?: string;
 }
 
 export default function Contact() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
+  const [form, setForm] = useState<FormState>({ name: "", email: "", phone: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -42,18 +45,34 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // For a static portfolio, open mailto with prefilled content
-    // In production, replace with an API call or form service
-    const subject = encodeURIComponent(`Portfolio inquiry from ${form.name}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(false);
+    try {
+      await emailjs.send(
+        "service_rwrc7yx",
+        "template_ujfto0d",
+        {
+          name: form.name,
+          email: form.email,
+          phone: form.phone || "Not provided",
+          message: form.message,
+        },
+        "W30LfGGeD3ilFX9sf"
+      );
+      setSubmitted(true);
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -351,6 +370,24 @@ export default function Contact() {
                   )}
                 </div>
 
+                {/* Phone */}
+                <div className="form-field" style={{ marginBottom: "2rem" }}>
+                  <label htmlFor="contact-phone" className="form-label">
+                    PHONE <span style={{ opacity: 0.4, fontSize: "0.65rem" }}>(OPTIONAL)</span>
+                  </label>
+                  <input
+                    id="contact-phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    className="form-input"
+                    placeholder="+91 XXXXX XXXXX"
+                    value={form.phone}
+                    onChange={handleChange}
+                    maxLength={20}
+                  />
+                </div>
+
                 {/* Message */}
                 <div className="form-field" style={{ marginBottom: "2.5rem" }}>
                   <label htmlFor="contact-message" className="form-label">
@@ -389,11 +426,12 @@ export default function Contact() {
                 <button
                   type="submit"
                   id="contact-submit-btn"
+                  disabled={isSubmitting}
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: "0.75rem",
-                    background: "#c8102e",
+                    background: isSubmitting ? "#7a0a1c" : "#c8102e",
                     color: "#fff",
                     fontFamily: "Geist, sans-serif",
                     fontSize: "0.9375rem",
@@ -402,19 +440,26 @@ export default function Contact() {
                     padding: "1rem 2rem",
                     borderRadius: "100px",
                     border: "none",
-                    transition: "background 0.3s ease, transform 0.3s ease",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    opacity: isSubmitting ? 0.7 : 1,
+                    transition: "background 0.3s ease, transform 0.3s ease, opacity 0.3s ease",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background = "#a50d26";
-                    (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
+                    if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.background = "#a50d26";
+                    if (!isSubmitting) (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background = "#c8102e";
+                    (e.currentTarget as HTMLButtonElement).style.background = isSubmitting ? "#7a0a1c" : "#c8102e";
                     (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)";
                   }}
                 >
-                  Send Message →
+                  {isSubmitting ? "Sending..." : "Send Message →"}
                 </button>
+                {submitError && (
+                  <p style={{ color: "#ff6b6b", fontSize: "0.8rem", marginTop: "0.5rem" }}>
+                    ❌ Kuch error aaya, thodi der baad try karo.
+                  </p>
+                )}
               </form>
             )}
           </motion.div>

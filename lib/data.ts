@@ -19,10 +19,9 @@ export const personalInfo = {
   gradYear: "2026",
   resumeUrl: "/resume.pdf",
   socials: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    twitter: "https://twitter.com",
-    instagram: "https://instagram.com",
+    github: "https://github.com/chaitanya-21-12",
+    linkedin: "https://www.linkedin.com/in/chaitanya-aggarwal-706721207/",
+    instagram: "https://www.instagram.com/_chaitanya.a_",
   },
 };
 
