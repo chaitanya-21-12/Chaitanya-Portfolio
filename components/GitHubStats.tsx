@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { skills } from "@/lib/data";
 
 interface Repo {
   name: string;
@@ -298,7 +299,38 @@ export default function GitHubStats() {
                 </div>
               </div>
 
+            {/* Frameworks & Tools */}
+            <div style={{
+              marginTop: "1.5rem",
+              background: "#0d0d0d",
+              border: "1px solid rgba(255,255,255,0.05)",
+              borderRadius: "12px",
+              padding: "1.5rem",
+            }}>
+              <p style={{
+                fontSize: "0.65rem", letterSpacing: "0.15em", color: "rgba(255,255,255,0.35)",
+                fontFamily: "Geist, sans-serif", marginBottom: "1.25rem", textTransform: "uppercase",
+              }}>
+                Frameworks & Tools
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {[...skills.frameworks, ...skills.backend].map((tech) => (
+                  <span key={tech} style={{
+                    padding: "0.3rem 0.75rem",
+                    borderRadius: "100px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    fontSize: "0.72rem",
+                    color: "rgba(255,255,255,0.65)",
+                    fontFamily: "Geist, sans-serif",
+                    background: "rgba(255,255,255,0.03)",
+                    letterSpacing: "0.02em",
+                  }}>
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
+
           </>
         )}
       </div>
