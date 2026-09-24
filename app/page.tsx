@@ -2,12 +2,12 @@
 
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import Loader from "@/components/Loader";
+import Hero from "@/components/Hero";
 
 const CursorGlow = dynamic(() => import("@/components/CursorGlow"), { ssr: false });
-const Loader = dynamic(() => import("@/components/Loader"), { ssr: false });
 const Header = dynamic(() => import("@/components/Header"), { ssr: false });
 const NavigationOverlay = dynamic(() => import("@/components/NavigationOverlay"), { ssr: false });
-const Hero = dynamic(() => import("@/components/Hero"), { ssr: false });
 
 import Projects from "@/components/Projects";
 import About from "@/components/About";
