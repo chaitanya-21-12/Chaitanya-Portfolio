@@ -14,6 +14,9 @@ export default function Loader({ onComplete }: LoaderProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Lock scroll while loader is active
+    document.body.style.overflow = "hidden";
+
     // Phase 1: monogram appears (0ms)
     const t1 = setTimeout(() => setPhase("name"), 800);
     // Phase 2: name reveals (800ms)
@@ -24,8 +27,10 @@ export default function Loader({ onComplete }: LoaderProps) {
     const t4 = setTimeout(() => {
       setPhase("exit");
     }, 2400);
-    // Complete (2800ms)
+    // Complete (2800ms) — snap to top before revealing page
     const t5 = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      document.body.style.overflow = "";
       onComplete();
     }, 2900);
 
@@ -35,6 +40,7 @@ export default function Loader({ onComplete }: LoaderProps) {
       clearTimeout(t3);
       clearTimeout(t4);
       clearTimeout(t5);
+      document.body.style.overflow = "";
     };
   }, [onComplete]);
 
