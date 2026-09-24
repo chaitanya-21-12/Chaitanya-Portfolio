@@ -12,7 +12,6 @@ const Hero = dynamic(() => import("@/components/Hero"), { ssr: false });
 import Projects from "@/components/Projects";
 import About from "@/components/About";
 import Experience from "@/components/Experience";
-import Skills from "@/components/Skills";
 import GitHubStats from "@/components/GitHubStats";
 import Education from "@/components/Education";
 import Contact from "@/components/Contact";
@@ -44,7 +43,6 @@ export default function Home() {
             <About />
             <Projects />
             <Experience />
-            <Skills />
             <GitHubStats />
             <Education />
             <Contact />
