@@ -63,14 +63,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
-        {/* Lock overflow from first paint — prevents scroll position flash before JS loads */}
-        <style dangerouslySetInnerHTML={{ __html: `html,body{overflow:hidden !important}` }} />
       </head>
       <body>
         {/* Disable browser scroll restoration before React hydrates */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `history.scrollRestoration = 'manual'; window.scrollTo(0, 0);`,
+            __html: `history.scrollRestoration='manual';window.scrollTo(0,0);document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';`,
           }}
         />
         {children}<Terminal />
