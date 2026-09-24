@@ -151,15 +151,6 @@ export const experiences: Experience[] = [
       "Working as a full stack developer, contributing across front-end and back-end development on production systems.",
   },
   {
-    id: "meda",
-    period: "2026 – Present",
-    role: "Web Development Freelancer",
-    company: "Meda Studio",
-    type: "FREELANCE",
-    description:
-      "Developing a client website end-to-end as an ongoing freelance engagement, managing the full development lifecycle.",
-  },
-  {
     id: "independent",
     period: "2025 – Present",
     role: "Freelance Web Developer",

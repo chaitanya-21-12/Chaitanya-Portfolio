@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Terminal from "@/components/Terminal";
 
 export const metadata: Metadata = {
   title: "Chaitanya Aggarwal — Full-Stack Developer & Creative Technologist",
@@ -58,8 +59,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body>{children}</body>
+      <body>{children}<Terminal /></body>
     </html>
   );
 }
