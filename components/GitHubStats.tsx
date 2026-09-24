@@ -299,6 +299,8 @@ export default function GitHubStats() {
                 </div>
               </div>
 
+            </div>{/* end Bottom Grid */}
+
             {/* Frameworks & Tools */}
             <div style={{
               marginTop: "1.5rem",
