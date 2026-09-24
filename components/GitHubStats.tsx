@@ -7,8 +7,8 @@ interface Repo {
   description: string | null;
   stars: number;
   language: string | null;
-  url: string;
-  updated: string;
+  isPrivate: boolean;
+  url: string | null;
 }
 
 interface Lang { name: string; count: number; }
@@ -16,6 +16,8 @@ interface Lang { name: string; count: number; }
 interface GHData {
   avatar: string;
   publicRepos: number;
+  privateRepos: number;
+  totalRepos: number;
   totalStars: number;
   followers: number;
   topRepos: Repo[];
@@ -133,7 +135,7 @@ export default function GitHubStats() {
               marginBottom: "2.5rem",
             }}>
               {[
-                { label: "Public Repos", value: data.publicRepos },
+                { label: "Total Repos", value: data.totalRepos },
                 { label: "Total Stars", value: data.totalStars },
                 { label: "Followers", value: data.followers },
               ].map(({ label, value }) => (
@@ -173,36 +175,41 @@ export default function GitHubStats() {
                   Top Repositories
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  {data.topRepos.map((repo) => (
-                    <a
+                  {data.topRepos.map((repo) => {
+                    const Tag = repo.url ? "a" : "div";
+                    return (
+                    <Tag
                       key={repo.name}
-                      href={repo.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...(repo.url ? { href: repo.url, target: "_blank", rel: "noopener noreferrer" } : {})}
                       style={{
                         display: "block", textDecoration: "none",
                         padding: "0.85rem 1rem",
                         border: "1px solid rgba(255,255,255,0.05)",
                         borderRadius: "8px", background: "rgba(255,255,255,0.02)",
                         transition: "border-color 0.2s, background 0.2s",
-                        cursor: "pointer",
+                        cursor: repo.url ? "pointer" : "default",
                       }}
-                      onMouseEnter={e => {
-                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(200,16,46,0.3)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(200,16,46,0.04)";
-                      }}
-                      onMouseLeave={e => {
-                        (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.05)";
-                        (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.02)";
-                      }}
+                      onMouseEnter={repo.url ? (e: React.MouseEvent<HTMLElement>) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(200,16,46,0.3)";
+                        (e.currentTarget as HTMLElement).style.background = "rgba(200,16,46,0.04)";
+                      } : undefined}
+                      onMouseLeave={repo.url ? (e: React.MouseEvent<HTMLElement>) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)";
+                        (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
+                      } : undefined}
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                        <span style={{
-                          fontSize: "0.8rem", color: "rgba(255,255,255,0.85)",
-                          fontFamily: "Geist, sans-serif", fontWeight: 500,
-                        }}>
-                          {repo.name}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                          {repo.isPrivate && (
+                            <span style={{ fontSize: "0.6rem", color: "rgba(255,255,255,0.3)", flexShrink: 0 }}>🔒</span>
+                          )}
+                          <span style={{
+                            fontSize: "0.8rem", color: "rgba(255,255,255,0.85)",
+                            fontFamily: "Geist, sans-serif", fontWeight: 500,
+                          }}>
+                            {repo.name}
+                          </span>
+                        </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
                           <span style={{ color: "#fbbf24", fontSize: "0.65rem" }}>★</span>
                           <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)", fontFamily: "Geist, sans-serif" }}>
@@ -233,8 +240,9 @@ export default function GitHubStats() {
                           </span>
                         </div>
                       )}
-                    </a>
-                  ))}
+                    </Tag>
+                    );
+                  })}
                 </div>
               </div>
 
