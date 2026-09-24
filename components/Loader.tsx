@@ -35,6 +35,7 @@ export default function Loader({ onComplete }: LoaderProps) {
     // Complete (2800ms) — snap to top before revealing page
     const t5 = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "instant" });
+      document.documentElement.style.overflow = ""; // remove html overflow lock
       document.body.style.overflow = "";
       onComplete();
     }, 2900);
@@ -45,6 +46,7 @@ export default function Loader({ onComplete }: LoaderProps) {
       clearTimeout(t3);
       clearTimeout(t4);
       clearTimeout(t5);
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [onComplete]);
