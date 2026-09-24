@@ -64,7 +64,15 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}<Terminal /></body>
+      <body>
+        {/* Disable browser scroll restoration before React hydrates */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration = 'manual'; window.scrollTo(0, 0);`,
+          }}
+        />
+        {children}<Terminal />
+      </body>
     </html>
   );
 }
